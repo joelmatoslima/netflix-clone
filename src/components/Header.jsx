@@ -28,7 +28,7 @@ function Header() {
       </div>
 
       <div>
-        <a href="/usuario">
+        <a href="/">
           <img src={usuario} alt="Usuario" />
         </a>
       </div>
