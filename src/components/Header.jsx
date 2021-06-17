@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import netflixLogo from "../img/netflix-logo.svg";
 import usuario from "../img/usuario.png";
 
 function Header() {
   const [blackHeader, setBlackHeader] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
     function scrollListener() {
@@ -19,18 +21,32 @@ function Header() {
     return () => window.removeEventListener("scroll", scrollListener);
   }, []);
 
+  function handleShowMenu(e) {
+    e.preventDefault();
+    setShowMenu(true);
+  }
+  function handleHiddeMenu() {
+    setShowMenu(false);
+  }
+
   return (
     <Head black={blackHeader}>
       <div>
-        <a href="/">
+        <a href="/home">
           <img src={netflixLogo} alt="Netflix" />
         </a>
       </div>
 
       <div>
-        <a href="/">
-          <img src={usuario} alt="Usuario" />
-        </a>
+        <img src={usuario} alt="Usuario" onClick={handleShowMenu} id="menu" />
+        {showMenu && (
+          <Exit onClick={handleHiddeMenu}>
+            {" "}
+            <div>
+              <Link to="/login">Sair</Link>{" "}
+            </div>
+          </Exit>
+        )}
       </div>
     </Head>
   );
@@ -55,6 +71,11 @@ const Head = styled.div`
   }
   div:last-child {
     height: 35px;
+    a {
+      color: white;
+      text-decoration: none;
+
+    }
   }
   div:last-child img {
     border-radius: 5px;
@@ -62,6 +83,7 @@ const Head = styled.div`
 
   img {
     height: 100%;
+    cursor: pointer;
   }
 
   ${({ black }) =>
@@ -69,4 +91,25 @@ const Head = styled.div`
     `    background-color: #141414;
   `}
 `;
+
+const Exit = styled.div`
+  width: 100%;
+  height: 100vh !important;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 999999;
+
+  div {
+    position: absolute;
+    right: 27px;
+    color: white;
+    background-color: #2f2f33;
+    margin-top: 60px;
+    padding: 10px 20px 10px;
+    border-radius: 5px;
+  }
+`;
+
 export default Header;
